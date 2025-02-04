@@ -1,14 +1,10 @@
-import { Link } from 'expo-router'
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-export default function index() {
+export default function setting() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>안녕하세요!</Text>
-      <Link href="/setting" style={styles.text}>
-        go to setting
-      </Link>
+      <Text style={styles.text}>세팅!</Text>
     </View>
   )
 }
