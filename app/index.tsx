@@ -1,8 +1,20 @@
 import { Link } from 'expo-router'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import * as SplashScreen from 'expo-splash-screen'
 
 export default function index() {
+  useEffect(() => {
+    const prepare = async () => {
+      await SplashScreen.preventAutoHideAsync()
+      setTimeout(async () => {
+        await SplashScreen.hideAsync()
+      }, 2000)
+    }
+
+    prepare()
+  }, [])
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>안녕하세요!</Text>
