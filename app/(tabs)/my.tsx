@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-export default function setting() {
+export default function my() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>세팅!</Text>
+      <Text style={styles.text}>프로필 화면</Text>
     </View>
   )
 }

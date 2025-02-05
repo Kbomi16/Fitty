@@ -1,20 +1,27 @@
 import { Stack } from 'expo-router'
+import { Image } from 'react-native'
 
 export default function RootLayout() {
   return (
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#f4511e',
+          backgroundColor: '#f0f0f0',
         },
-        headerTintColor: '#fff',
+        headerTintColor: '#000',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
+        headerTitle: 'Fitty',
+        headerLeft: () => (
+          <Image
+            source={require('../assets/images/faceLogo_bgRemoved.png')}
+            style={{ width: 40, height: 40, marginLeft: 130 }}
+          />
+        ),
       }}
     >
-      <Stack.Screen name="index" />
-      <Stack.Screen name="setting" />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
     </Stack>
   )
 }
