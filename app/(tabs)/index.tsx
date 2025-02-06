@@ -91,14 +91,14 @@ export default function index() {
       {/* 사용자 위치 정보 표시 */}
       {userLocation && (
         <Text style={styles.text}>
-          현재 위치: {userLocation.latitude.toFixed(4)},{' '}
+          현재 위치: {userLocation.latitude.toFixed(4)},
           {userLocation.longitude.toFixed(4)}
         </Text>
       )}
 
       {/* 헬스장 위치 정보 표시 */}
       <Text style={styles.text}>
-        헬스장 위치: {gymLocation.latitude.toFixed(4)},{' '}
+        헬스장 위치: {gymLocation.latitude.toFixed(4)},
         {gymLocation.longitude.toFixed(4)}
       </Text>
 
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#fff',
   },
   text: {
     fontSize: 24,
