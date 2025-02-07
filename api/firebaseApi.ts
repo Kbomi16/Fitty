@@ -1,10 +1,17 @@
+import { LoginFormData } from '@/app/(auth)/login'
 import { FinalSignupFormData } from '@/app/(auth)/signup'
 import { db, auth } from '@/firebaseConfig'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  UserCredential,
+} from 'firebase/auth'
 import { addDoc, collection } from 'firebase/firestore'
 
-// 유저 추가
-export const addUser = async (userData: FinalSignupFormData): Promise<void> => {
+// 회원가입
+export const signupUser = async (
+  userData: FinalSignupFormData
+): Promise<void> => {
   try {
     // Firebase Authentication에 유저 등록
     const userCredential = await createUserWithEmailAndPassword(
@@ -22,6 +29,23 @@ export const addUser = async (userData: FinalSignupFormData): Promise<void> => {
     })
   } catch (error) {
     console.error('회원가입 실패:', error)
+    throw error
+  }
+}
+
+// 로그인
+export const loginUser = async (
+  userData: LoginFormData
+): Promise<UserCredential> => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      userData.email,
+      userData.password
+    )
+    return userCredential
+  } catch (error) {
+    console.error('로그인 실패:', error)
     throw error
   }
 }

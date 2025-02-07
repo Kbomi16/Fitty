@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
-import { addUser } from '@/api/firebaseApi'
+import { signupUser } from '@/api/firebaseApi'
 
 type SignupFormData = z.infer<typeof signupSchema>
 export type FinalSignupFormData = Omit<SignupFormData, 'confirmPassword'>
@@ -20,10 +20,11 @@ export default function Signup() {
     formState: { errors },
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
+    mode: 'all',
   })
 
   const mutation = useMutation<void, Error, FinalSignupFormData>({
-    mutationFn: addUser,
+    mutationFn: signupUser,
     onSuccess: () => {
       Alert.alert('회원가입 성공!', '이제 Fitty를 사용할 수 있어요.')
       router.push('/login')
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#d1d5db',
     padding: 12,
-    marginBottom: 16,
+    marginBottom: 8,
     borderRadius: 100,
     backgroundColor: '#ffffff',
   },
