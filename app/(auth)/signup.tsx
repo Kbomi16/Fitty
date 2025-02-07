@@ -1,9 +1,44 @@
 import Button from '@/components/ui/Button'
+import { signupSchema } from '@/constants/signupSchema'
 import { commonStyles } from '@/styles/commonStyles'
 import { Link, router } from 'expo-router'
-import { View, TextInput, StyleSheet, Text, Image } from 'react-native'
+import { View, TextInput, StyleSheet, Text, Image, Alert } from 'react-native'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { useMutation } from '@tanstack/react-query'
+import { addUser } from '@/api/firebaseApi'
+
+type SignupFormData = z.infer<typeof signupSchema>
+export type FinalSignupFormData = Omit<SignupFormData, 'confirmPassword'>
 
 export default function Signup() {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
+  })
+
+  const mutation = useMutation<void, Error, FinalSignupFormData>({
+    mutationFn: addUser,
+    onSuccess: () => {
+      Alert.alert('회원가입 성공!', '이제 Fitty를 사용할 수 있어요.')
+      router.push('/login')
+    },
+    onError: (error: Error) => {
+      console.error(error)
+      Alert.alert('회원가입 실패!', '다시 시도해주세요.')
+    },
+  })
+
+  const onSubmit = (data: SignupFormData) => {
+    const { confirmPassword, ...userData } = data
+    mutation.mutate(userData)
+  }
+
   return (
     <View style={commonStyles.container}>
       <Link href="/">
@@ -17,23 +52,48 @@ export default function Signup() {
         placeholder="닉네임"
         style={styles.input}
         keyboardType="email-address"
+        {...register('nickname')}
+        onChangeText={(text) => setValue('nickname', text)}
       />
+      {errors.nickname && (
+        <Text style={styles.errorText}>{errors.nickname.message}</Text>
+      )}
       <TextInput
         placeholder="이메일"
         style={styles.input}
         keyboardType="email-address"
+        {...register('email')}
+        onChangeText={(text) => setValue('email', text)}
       />
-      <TextInput placeholder="비밀번호" secureTextEntry style={styles.input} />
+      {errors.email && (
+        <Text style={styles.errorText}>{errors.email.message}</Text>
+      )}
+
+      <TextInput
+        placeholder="비밀번호"
+        secureTextEntry
+        style={styles.input}
+        {...register('password')}
+        onChangeText={(text) => setValue('password', text)}
+      />
+      {errors.password && (
+        <Text style={styles.errorText}>{errors.password.message}</Text>
+      )}
       <TextInput
         placeholder="비밀번호 확인"
         secureTextEntry
         style={styles.input}
+        {...register('confirmPassword')}
+        onChangeText={(text) => setValue('confirmPassword', text)}
       />
+      {errors.confirmPassword && (
+        <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>
+      )}
 
-      <Button title="회원가입" onPress={() => router.push('/')} />
+      <Button title="회원가입" onPress={handleSubmit(onSubmit)} />
 
       <Text style={styles.footerText}>
-        이미 회원이신가요?
+        이미 계정이 있으신가요?
         <Text style={styles.linkText} onPress={() => router.push('/login')}>
           로그인하러 가기
         </Text>
@@ -66,20 +126,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     backgroundColor: '#ffffff',
   },
-  button: {
-    backgroundColor: '#739fff',
-    width: '100%',
-    maxWidth: 300,
-    paddingVertical: 14,
-    borderRadius: 100,
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: '600',
-  },
   footerText: {
     marginTop: 20,
     fontSize: 14,
@@ -89,4 +135,5 @@ const styles = StyleSheet.create({
     color: '#739fff',
     fontWeight: 'bold',
   },
+  errorText: { color: 'red', marginBottom: 8 },
 })
