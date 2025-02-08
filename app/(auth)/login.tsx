@@ -8,14 +8,11 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { loginUser } from '@/api/firebaseApi'
-import { useAuthState } from '@/hooks/useAuthState'
 import { UserCredential } from 'firebase/auth'
 
 export type LoginFormData = z.infer<typeof loginSchema>
 
 export default function Login() {
-  const loading = useAuthState()
-
   const {
     register,
     handleSubmit,
@@ -40,14 +37,6 @@ export default function Login() {
 
   const onSubmit = (data: LoginFormData) => {
     mutation.mutate(data)
-  }
-
-  if (loading) {
-    return (
-      <View style={commonStyles.container}>
-        <Text>로딩 중...</Text>
-      </View>
-    )
   }
 
   return (

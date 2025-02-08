@@ -1,16 +1,9 @@
-import { useAuthState } from '@/hooks/useAuthState'
 import { queryClient } from '@/queryClient'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
-import { Image, Text } from 'react-native'
+import { Image } from 'react-native'
 
 export default function RootLayout() {
-  const loading = useAuthState()
-
-  if (loading) {
-    return <Text>로딩 중...</Text>
-  }
-
   return (
     <QueryClientProvider client={queryClient}>
       <Stack
