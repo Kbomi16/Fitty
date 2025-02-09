@@ -1,4 +1,4 @@
-import Button from '@/components/ui/PrimaryButton'
+import PrimaryButton from '@/components/ui/PrimaryButton'
 import { router } from 'expo-router'
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
 
@@ -13,7 +13,7 @@ export default function Start() {
       <Text style={styles.description}>
         헬스장 등록 후 위치 인증으로 운동 기록을 관리해 보세요.
       </Text>
-      <Button title="시작하기" onPress={() => router.push('/login')} />
+      <PrimaryButton title="시작하기" onPress={() => router.push('/login')} />
     </View>
   )
 }

@@ -6,13 +6,14 @@ import {
   ActivityIndicator,
   TextInput,
   Image,
+  Button,
 } from 'react-native'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { UserDetail } from '@/types/user'
 import { getUserData } from '@/api/firebaseApi'
 import { auth } from '@/firebaseConfig'
 import { FontAwesome } from '@expo/vector-icons'
-import Button from '@/components/ui/PrimaryButton'
+import PrimaryButton from '@/components/ui/PrimaryButton'
 
 export default function MyPage() {
   const [userData, setUserData] = useState<UserDetail | null>(null)
@@ -117,7 +118,7 @@ export default function MyPage() {
             )}
 
             <View style={styles.buttonContainer}>
-              <Button
+              <PrimaryButton
                 title={isEditing ? '저장' : '프로필 편집'}
                 onPress={isEditing ? handleSaveProfile : handleEditToggle}
               />
