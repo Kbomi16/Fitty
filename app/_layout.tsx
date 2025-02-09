@@ -2,6 +2,7 @@ import { queryClient } from '@/queryClient'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
 import { Image } from 'react-native'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 export default function RootLayout() {
   return (
@@ -25,6 +26,7 @@ export default function RootLayout() {
         }}
       >
         <Stack.Screen name="(tabs)/home" options={{ headerShown: false }} />
+        <ReactQueryDevtools initialIsOpen={false} />
       </Stack>
     </QueryClientProvider>
   )
