@@ -7,6 +7,7 @@ import {
   TextInput,
   Image,
   Button,
+  TouchableOpacity,
 } from 'react-native'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { UserDetail } from '@/types/user'
@@ -127,7 +128,12 @@ export default function MyPage() {
 
           <View style={styles.buttonContainer}>
             <View style={styles.separator} />
-            <Button title="로그아웃" onPress={handleLogout} />
+            <TouchableOpacity
+              onPress={handleLogout}
+              style={styles.logoutButton}
+            >
+              <Text style={{ color: 'gray', fontSize: 16 }}>로그아웃</Text>
+            </TouchableOpacity>
           </View>
         </View>
       ) : (
@@ -167,18 +173,18 @@ const styles = StyleSheet.create({
   },
   profileDetails: {
     width: '100%',
-    paddingHorizontal: 10,
+    paddingHorizontal: 30,
   },
   heading: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginTop: 10,
+    marginTop: 20,
     color: '#739fff',
   },
   text: {
     fontSize: 16,
     color: '#555',
-    marginBottom: 10,
+    marginTop: 5,
   },
   input: {
     fontSize: 16,
@@ -194,8 +200,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   separator: {
-    borderBottomWidth: 3,
-    borderBottomColor: '#000',
-    marginVertical: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: '#f0f0f0',
+    width: '100%',
+    marginBottom: 15,
+  },
+  logoutButton: {
+    width: '100%',
+    maxWidth: 300,
+    paddingVertical: 14,
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#f8f9fa',
   },
 })
