@@ -8,6 +8,7 @@ import {
   Image,
   Button,
   TouchableOpacity,
+  Alert,
 } from 'react-native'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { UserDetail } from '@/types/user'
@@ -15,6 +16,7 @@ import { getUserData } from '@/api/firebaseApi'
 import { auth } from '@/firebaseConfig'
 import { FontAwesome } from '@expo/vector-icons'
 import PrimaryButton from '@/components/ui/PrimaryButton'
+import { router } from 'expo-router'
 
 export default function MyPage() {
   const [userData, setUserData] = useState<UserDetail | null>(null)
@@ -51,20 +53,16 @@ export default function MyPage() {
     setIsEditing(!isEditing)
   }
 
+  // TODO: 프로필 편집 기능 구현하기
   const handleSaveProfile = () => {
     setIsEditing(false)
     console.log('Profile saved:', nickname, bio)
-    // Add logic to save the updated data to Firebase
   }
 
-  const handleLogout = () => {
-    signOut(auth)
-      .then(() => {
-        console.log('로그아웃 성공')
-      })
-      .catch((error) => {
-        console.error('로그아웃 실패:', error)
-      })
+  const handleLogout = async () => {
+    await auth.signOut()
+    Alert.alert('로그아웃', '로그인이 필요해요!')
+    router.push('/login')
   }
 
   if (isLoading) {
