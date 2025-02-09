@@ -1,4 +1,3 @@
-import Button from '@/components/ui/Button'
 import { signupSchema } from '@/constants/signupSchema'
 import { commonStyles } from '@/styles/commonStyles'
 import { Link, router } from 'expo-router'
@@ -8,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { signupUser } from '@/api/firebaseApi'
+import PrimaryButton from '@/components/ui/PrimaryButton'
 
 type SignupFormData = z.infer<typeof signupSchema>
 export type FinalSignupFormData = Omit<SignupFormData, 'confirmPassword'>
@@ -91,7 +91,7 @@ export default function Signup() {
         <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>
       )}
 
-      <Button title="회원가입" onPress={handleSubmit(onSubmit)} />
+      <PrimaryButton title="회원가입" onPress={handleSubmit(onSubmit)} />
 
       <Text style={styles.footerText}>
         이미 계정이 있으신가요?

@@ -1,6 +1,6 @@
 export type UserDetail = {
-  id: string
   nickname: string
   email: string
+  bio?: string
   friends?: string[]
 }

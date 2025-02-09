@@ -1,4 +1,3 @@
-import Button from '@/components/ui/Button'
 import { loginSchema } from '@/constants/loginSchema'
 import { commonStyles } from '@/styles/commonStyles'
 import { Link, router } from 'expo-router'
@@ -9,6 +8,7 @@ import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { loginUser } from '@/api/firebaseApi'
 import { UserCredential } from 'firebase/auth'
+import PrimaryButton from '@/components/ui/PrimaryButton'
 
 export type LoginFormData = z.infer<typeof loginSchema>
 
@@ -27,7 +27,7 @@ export default function Login() {
     mutationFn: loginUser,
     onSuccess: () => {
       Alert.alert('로그인 성공!', '오늘 운동을 완료하세요.')
-      router.push('/(tabs)')
+      router.push('/(tabs)/home')
     },
     onError: (error: Error) => {
       console.error(error)
@@ -70,7 +70,7 @@ export default function Login() {
         <Text style={styles.errorText}>{errors.password.message}</Text>
       )}
 
-      <Button title="로그인" onPress={handleSubmit(onSubmit)} />
+      <PrimaryButton title="로그인" onPress={handleSubmit(onSubmit)} />
 
       <Text style={styles.footerText}>
         계정이 없으신가요?
