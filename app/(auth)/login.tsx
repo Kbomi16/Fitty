@@ -27,7 +27,7 @@ export default function Login() {
     mutationFn: loginUser,
     onSuccess: () => {
       Alert.alert('로그인 성공!', '오늘 운동을 완료하세요.')
-      router.push('/(tabs)')
+      router.push('/(tabs)/home')
     },
     onError: (error: Error) => {
       console.error(error)
