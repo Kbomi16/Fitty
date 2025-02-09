@@ -1,4 +1,4 @@
-import Button from '@/components/ui/Button'
+import Button from '@/components/ui/PrimaryButton'
 import { loginSchema } from '@/constants/loginSchema'
 import { commonStyles } from '@/styles/commonStyles'
 import { Link, router } from 'expo-router'

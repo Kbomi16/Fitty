@@ -1,4 +1,4 @@
-import Button from '@/components/ui/Button'
+import Button from '@/components/ui/PrimaryButton'
 import { router } from 'expo-router'
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
 

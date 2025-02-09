@@ -59,7 +59,6 @@ export const getUserData = async (uid: string): Promise<UserDetail | null> => {
     const docSnap = await getDoc(userDocRef) // 문서 가져오기
 
     if (docSnap.exists()) {
-      console.log('찾은 사용자 데이터:', docSnap.data()) // 데이터 확인 로그
       return docSnap.data() as UserDetail // UserDetail 타입으로 반환
     } else {
       console.log('사용자 정보를 찾을 수 없습니다.')
