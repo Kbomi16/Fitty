@@ -1,50 +1,32 @@
-# Welcome to your Expo app 👋
+# 🏋🏻Fitty
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+피트니스 관리 애플리케이션
 
-## Get started
+피트니스 관리 앱 **Fitty**는 여러분이 헬스장을 등록하고, 헬스장에 도착하면 인증을 완료할 수 있는 피트니스 동반자입니다! 🏋️‍♂️
 
-1. Install dependencies
+## 📍**개발 기간**
 
-   ```bash
-   npm install
-   ```
+2024.02 ~
 
-2. Start the app
+## 📍**주요 기능**
 
-   ```bash
-    npx expo start
-   ```
+### 1️⃣ **헬스장 인증**
 
-In the output, you'll find options to open the app in a
+- 헬스장 등록: 사용자는 자신의 헬스장을 등록할 수 있습니다.
+- 반경 50m 내 인증: 사용자가 설정한 헬스장 반경 내에 들어가면 인증을 완료할 수 있습니다.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### 2️⃣ **운동 루틴 설정**
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- 운동 기록: 사용자는 각 운동의 세트, 반복 횟수 등을 기록하고, 목표를 향한 진행 상황을 추적할 수 있습니다.
 
-## Get a fresh project
+### 4️⃣ **알림 시스템**
 
-When you're ready, run:
+- Firebase Cloud Messaging (FCM)을 사용하여 운동 루틴에 대한 알림을 푸시 알림으로 전달합니다.
 
-```bash
-npm run reset-project
-```
+### 5️⃣ **친구 관리**
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+- 친구 추가/삭제: 사용자는 다른 사용자와 친구를 추가하고, 운동 목표를 함께 공유할 수 있습니다.
 
-## Learn more
+## 📍**기술 스택**
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- React Native, Firebase, React Query, Expo, React Native Geolocation
