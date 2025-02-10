@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Button, StyleSheet, Alert } from 'react-native'
-import * as SplashScreen from 'expo-splash-screen'
+import { View, Text, StyleSheet } from 'react-native'
+import * as Location from 'expo-location'
 import KakaoMap from '@/components/KakaoMap'
 
 export default function Home() {
-  // 서울의 위도와 경도
-  const seoulLatitude = 37.5665
-  const seoulLongitude = 126.978
+  const [location, setLocation] = useState<{
+    latitude: number
+    longitude: number
+  } | null>(null)
 
-  // 사용자 위치 권한 요청 및 위치 가져오기
   useEffect(() => {
-    const prepare = async () => {
-      await SplashScreen.preventAutoHideAsync()
-      setTimeout(async () => {
-        await SplashScreen.hideAsync()
-      }, 2000)
+    const getCurrentLocation = async () => {
+      // 현재 위치 가져오기
+      try {
+        const { coords } = await Location.getCurrentPositionAsync({})
+        setLocation({
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+        })
+      } catch (error) {
+        console.error('위치 정보를 가져오는 데 실패했습니다:', error)
+      }
     }
 
-    prepare()
+    getCurrentLocation()
   }, [])
 
   return (
     <View style={styles.container}>
       <Text style={styles.text}>안녕하세요!</Text>
-      <KakaoMap latitude={seoulLatitude} longitude={seoulLongitude} />
+      {location ? (
+        <KakaoMap latitude={location.latitude} longitude={location.longitude} />
+      ) : (
+        <Text>위치를 가져오는 중입니다...</Text>
+      )}
     </View>
   )
 }
@@ -37,10 +47,5 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 24,
-  },
-  success: {
-    marginTop: 20,
-    fontSize: 18,
-    color: 'green',
   },
 })

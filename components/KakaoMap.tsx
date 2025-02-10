@@ -53,11 +53,6 @@ export default function KakaoMap({ latitude, longitude }: KakaoMapProps) {
         domStorageEnabled={true}
         onLoad={() => console.log('WebView loaded successfully')}
         onError={(e) => console.error('WebView error: ', e.nativeEvent)}
-        injectedJavaScript={`(function() {
-          window.console.log = function(message) {
-            window.ReactNativeWebView.postMessage(message);
-          }
-        })();`}
         onMessage={(event) => console.log(event.nativeEvent.data)}
       />
     </View>
