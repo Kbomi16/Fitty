@@ -16,9 +16,9 @@ export default function KakaoMap({ latitude, longitude }: KakaoMapProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_JS_KEY}&libraries=services"></script>
         <style>
-          body { margin: 0; padding: 0; height: 100%; }
+          body { margin: 0; padding: 0; height: 100%; background-color: #f9f9f9}
           html { height: 100%; }
-          #map { width: 100%; height: 100%; }
+          #map { width: 100%; height: 100%; border-radius: 20px; overflow: hidden;}
         </style>
       </head>
       <body>
@@ -61,10 +61,9 @@ export default function KakaoMap({ latitude, longitude }: KakaoMapProps) {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#f9f9f9',
     width: '100%',
     height: 500,
     marginTop: 20,
-    borderWidth: 1,
-    borderColor: '#ddd',
   },
 })
