@@ -10,16 +10,12 @@ import {
 import { KAKAO_MAP_JS_KEY } from 'react-native-dotenv'
 
 type SearchGymProps = {
-  location: { latitude: number; longitude: number } | null
   onSearchResult: (
     result: { latitude: number; longitude: number } | null
   ) => void
 }
 
-export default function SearchGym({
-  location,
-  onSearchResult,
-}: SearchGymProps) {
+export default function SearchGym({ onSearchResult }: SearchGymProps) {
   const [searchQuery, setSearchQuery] = useState<string>('')
 
   const searchGym = async () => {
