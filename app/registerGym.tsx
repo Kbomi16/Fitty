@@ -168,7 +168,11 @@ export default function RegisterGym() {
       )}
 
       {location ? (
-        <KakaoMap latitude={location.latitude} longitude={location.longitude} />
+        <KakaoMap
+          latitude={location.latitude}
+          longitude={location.longitude}
+          height={500}
+        />
       ) : (
         <Text>위치를 가져오는 중입니다...</Text>
       )}

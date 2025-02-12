@@ -6,9 +6,14 @@ import { KAKAO_MAP_JS_KEY } from 'react-native-dotenv'
 type KakaoMapProps = {
   latitude: number
   longitude: number
+  height: number
 }
 
-export default function KakaoMap({ latitude, longitude }: KakaoMapProps) {
+export default function KakaoMap({
+  latitude,
+  longitude,
+  height,
+}: KakaoMapProps) {
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -45,7 +50,7 @@ export default function KakaoMap({ latitude, longitude }: KakaoMapProps) {
   `
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { height }]}>
       <WebView
         originWhitelist={['*']}
         source={{ html: htmlContent }}
@@ -63,7 +68,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f9f9f9',
     width: '100%',
-    height: 500,
     marginTop: 20,
   },
 })

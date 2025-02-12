@@ -5,6 +5,7 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import PrimaryButton from '@/components/ui/PrimaryButton'
 import useCurrentLocation from '@/hooks/useCurrentLocation'
 import { getDistance } from '@/utils/getDistance'
+import KakaoMap from '@/components/KakaoMap'
 
 export default function Home() {
   const [completedToday, setCompletedToday] = useState(false) // 오늘 운동 인증 여부
@@ -127,9 +128,18 @@ export default function Home() {
       {completedToday ? (
         <Text style={styles.completedText}>오늘 운동 인증 완료하셨습니다!</Text>
       ) : (
-        <PrimaryButton onPress={handleCompleteWorkout}>
-          운동 인증 버튼
-        </PrimaryButton>
+        <>
+          {gymLocation && (
+            <KakaoMap
+              latitude={gymLocation.latitude}
+              longitude={gymLocation.longitude}
+              height={300}
+            />
+          )}
+          <PrimaryButton onPress={handleCompleteWorkout}>
+            운동 인증 버튼
+          </PrimaryButton>
+        </>
       )}
     </View>
   )
