@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -8,75 +8,61 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   ActivityIndicator,
-  Animated,
   Alert,
+  Animated,
 } from 'react-native'
-import * as Location from 'expo-location'
 import KakaoMap from '@/components/KakaoMap'
 import { KAKAO_REST_API_KEY } from 'react-native-dotenv'
 import { auth, db } from '@/firebaseConfig'
 import { doc, updateDoc } from 'firebase/firestore'
+import useCurrentLocation from '@/hooks/useCurrentLocation'
+import { router } from 'expo-router'
 
-export default function registerGym() {
-  const [location, setLocation] = useState<{
-    latitude: number
-    longitude: number
-  } | null>(null)
+export default function RegisterGym() {
+  const { location, setLocation } = useCurrentLocation()
   const [searchResults, setSearchResults] = useState<
-    Array<{
-      latitude: number
-      longitude: number
-      place_name: string
-    }>
+    Array<{ latitude: number; longitude: number; place_name: string }>
   >([])
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
-
   const [animation] = useState(new Animated.Value(0))
-
-  const getCurrentLocation = async () => {
-    try {
-      const { coords } = await Location.getCurrentPositionAsync({})
-      setLocation({
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-      })
-    } catch (error) {
-      console.error('위치 정보를 가져오는 데 실패했습니다:', error)
-    }
-  }
 
   const searchGym = async () => {
     if (searchQuery && location) {
       setLoading(true)
-      const response = await fetch(
-        `https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchQuery}&x=${location.longitude}&y=${location.latitude}&radius=2000`,
-        {
-          headers: {
-            Authorization: `KakaoAK ${KAKAO_REST_API_KEY}`,
-          },
-        }
-      )
-      const data = await response.json()
-      setLoading(false)
-
-      if (data.documents.length > 0) {
-        const results = data.documents.map(
-          (doc: { y: number; x: number; place_name: string }) => ({
-            latitude: doc.y,
-            longitude: doc.x,
-            place_name: doc.place_name,
-          })
+      try {
+        const response = await fetch(
+          `https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchQuery}&x=${location.longitude}&y=${location.latitude}&radius=2000`,
+          {
+            headers: {
+              Authorization: `KakaoAK ${KAKAO_REST_API_KEY}`,
+            },
+          }
         )
-        setSearchResults(results)
+        const data = await response.json()
+        setLoading(false)
 
-        Animated.timing(animation, {
-          toValue: 1,
-          duration: 500,
-          useNativeDriver: true,
-        }).start()
-      } else {
-        alert('검색 결과가 없습니다.')
+        if (data.documents.length > 0) {
+          const results = data.documents.map(
+            (doc: { y: number; x: number; place_name: string }) => ({
+              latitude: doc.y,
+              longitude: doc.x,
+              place_name: doc.place_name,
+            })
+          )
+          setSearchResults(results)
+
+          Animated.timing(animation, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+          }).start()
+        } else {
+          alert('검색 결과가 없습니다.')
+        }
+      } catch (error) {
+        setLoading(false)
+        console.error('검색 중 오류 발생:', error)
       }
     }
   }
@@ -89,14 +75,12 @@ export default function registerGym() {
     setLocation({ latitude: item.latitude, longitude: item.longitude })
     setSearchResults([])
 
-    // 애니메이션 종료
     Animated.timing(animation, {
       toValue: 0,
       duration: 300,
       useNativeDriver: true,
     }).start()
 
-    // 현재 로그인한 사용자 가져오기
     const user = auth.currentUser
     if (!user) {
       alert('로그인이 필요합니다.')
@@ -104,7 +88,6 @@ export default function registerGym() {
     }
 
     try {
-      // Firestore의 users 컬렉션에서 해당 유저 문서 가져오기
       const userRef = doc(db, 'users', user.uid)
       await updateDoc(userRef, {
         myGym: {
@@ -115,15 +98,12 @@ export default function registerGym() {
       })
 
       Alert.alert(`${item.place_name}이(가) 등록되었습니다!`)
+      router.push('/(tabs)/home')
     } catch (error) {
       console.error('헬스장 등록 오류:', error)
       alert('헬스장 등록에 실패했습니다.')
     }
   }
-
-  useEffect(() => {
-    getCurrentLocation()
-  }, [])
 
   return (
     <View style={styles.container}>
@@ -132,7 +112,7 @@ export default function registerGym() {
         <View style={styles.inputWrapper}>
           <TextInput
             style={styles.input}
-            placeholder="헬스장 이름 입력"
+            placeholder="헬스장 이름으로 검색하세요."
             value={searchQuery}
             onChangeText={setSearchQuery}
             placeholderTextColor="#888"
@@ -147,14 +127,7 @@ export default function registerGym() {
         <ActivityIndicator size="large" color="#739fff" />
       ) : (
         searchResults.length > 0 && (
-          <Animated.View
-            style={[
-              styles.overlay,
-              {
-                opacity: animation,
-              },
-            ]}
-          >
+          <Animated.View style={[styles.overlay, { opacity: animation }]}>
             <TouchableWithoutFeedback onPress={() => setSearchResults([])}>
               <View style={styles.modalBackground} />
             </TouchableWithoutFeedback>
