@@ -118,9 +118,10 @@ export default function MyPage() {
 
             <View style={styles.buttonContainer}>
               <PrimaryButton
-                title={isEditing ? '저장' : '프로필 편집'}
                 onPress={isEditing ? handleSaveProfile : handleEditToggle}
-              />
+              >
+                {isEditing ? '저장' : '프로필 편집'}
+              </PrimaryButton>
             </View>
           </View>
 

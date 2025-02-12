@@ -1,15 +1,18 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 
 type PrimaryButtonProps = {
-  title: string
+  children: ReactNode
   onPress: () => void
 }
 
-export default function PrimaryButton({ title, onPress }: PrimaryButtonProps) {
+export default function PrimaryButton({
+  children,
+  onPress,
+}: PrimaryButtonProps) {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
+      <Text style={styles.buttonText}>{children}</Text>
     </TouchableOpacity>
   )
 }

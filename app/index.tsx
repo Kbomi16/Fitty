@@ -13,7 +13,9 @@ export default function Start() {
       <Text style={styles.description}>
         헬스장 등록 후 위치 인증으로 운동 기록을 관리해 보세요.
       </Text>
-      <PrimaryButton title="시작하기" onPress={() => router.push('/login')} />
+      <PrimaryButton onPress={() => router.push('/login')}>
+        시작하기
+      </PrimaryButton>
     </View>
   )
 }
