@@ -9,6 +9,8 @@ import { useMutation } from '@tanstack/react-query'
 import { loginUser } from '@/api/firebaseApi'
 import { UserCredential } from 'firebase/auth'
 import PrimaryButton from '@/components/ui/PrimaryButton'
+import { db } from '@/firebaseConfig'
+import { doc, getDoc } from 'firebase/firestore'
 
 export type LoginFormData = z.infer<typeof loginSchema>
 
@@ -25,9 +27,26 @@ export default function Login() {
 
   const mutation = useMutation<UserCredential, Error, LoginFormData>({
     mutationFn: loginUser,
-    onSuccess: () => {
+    onSuccess: async (userCredential) => {
       Alert.alert('로그인 성공!', '오늘 운동을 완료하세요.')
-      router.push('/(tabs)/home')
+
+      const user = userCredential.user
+      const userRef = doc(db, 'users', user.uid)
+      const userDoc = await getDoc(userRef)
+
+      if (userDoc.exists()) {
+        const myGym = userDoc.data().myGym
+
+        if (myGym) {
+          // 등록된 헬스장이 있는 경우
+          router.push('/(tabs)/home')
+        } else {
+          // 등록된 헬스장이 없는 경우
+          router.push('/registerGym')
+        }
+      } else {
+        Alert.alert('사용자 정보를 찾을 수 없습니다.')
+      }
     },
     onError: (error: Error) => {
       console.error(error)
