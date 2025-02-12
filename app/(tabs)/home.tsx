@@ -9,10 +9,13 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
   Animated,
+  Alert,
 } from 'react-native'
 import * as Location from 'expo-location'
 import KakaoMap from '@/components/KakaoMap'
 import { KAKAO_REST_API_KEY } from 'react-native-dotenv'
+import { auth, db } from '@/firebaseConfig'
+import { doc, updateDoc } from 'firebase/firestore'
 
 export default function Home() {
   const [location, setLocation] = useState<{
@@ -78,18 +81,44 @@ export default function Home() {
     }
   }
 
-  const handleSelectResult = (item: {
+  const handleSelectResult = async (item: {
     latitude: number
     longitude: number
     place_name: string
   }) => {
     setLocation({ latitude: item.latitude, longitude: item.longitude })
     setSearchResults([])
+
+    // 애니메이션 종료
     Animated.timing(animation, {
       toValue: 0,
       duration: 300,
       useNativeDriver: true,
     }).start()
+
+    // 현재 로그인한 사용자 가져오기
+    const user = auth.currentUser
+    if (!user) {
+      alert('로그인이 필요합니다.')
+      return
+    }
+
+    try {
+      // Firestore의 users 컬렉션에서 해당 유저 문서 가져오기
+      const userRef = doc(db, 'users', user.uid)
+      await updateDoc(userRef, {
+        myGym: {
+          name: item.place_name,
+          latitude: item.latitude,
+          longitude: item.longitude,
+        },
+      })
+
+      Alert.alert(`${item.place_name}이(가) 등록되었습니다!`)
+    } catch (error) {
+      console.error('헬스장 등록 오류:', error)
+      alert('헬스장 등록에 실패했습니다.')
+    }
   }
 
   useEffect(() => {
