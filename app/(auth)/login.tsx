@@ -77,7 +77,6 @@ export default function Login() {
       {errors.email && (
         <Text style={styles.errorText}>{errors.email.message}</Text>
       )}
-
       <TextInput
         placeholder="비밀번호"
         secureTextEntry
@@ -88,9 +87,7 @@ export default function Login() {
       {errors.password && (
         <Text style={styles.errorText}>{errors.password.message}</Text>
       )}
-
-      <PrimaryButton title="로그인" onPress={handleSubmit(onSubmit)} />
-
+      <PrimaryButton onPress={handleSubmit(onSubmit)}>로그인</PrimaryButton>
       <Text style={styles.footerText}>
         계정이 없으신가요?
         <Text style={styles.linkText} onPress={() => router.push('/signup')}>

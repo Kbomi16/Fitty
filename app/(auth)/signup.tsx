@@ -91,7 +91,7 @@ export default function Signup() {
         <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>
       )}
 
-      <PrimaryButton title="회원가입" onPress={handleSubmit(onSubmit)} />
+      <PrimaryButton onPress={handleSubmit(onSubmit)}>회원가입</PrimaryButton>
 
       <Text style={styles.footerText}>
         이미 계정이 있으신가요?
