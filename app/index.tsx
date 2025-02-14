@@ -1,8 +1,27 @@
+import React, { useEffect } from 'react'
 import PrimaryButton from '@/components/ui/PrimaryButton'
 import { router } from 'expo-router'
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Text, Image, Alert } from 'react-native'
+import * as Location from 'expo-location'
 
 export default function Start() {
+  useEffect(() => {
+    const requestLocationPermission = async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync()
+      if (status !== 'granted') {
+        Alert.alert(
+          '위치 권한 필요',
+          '앱을 사용하려면 위치 권한이 필요합니다.',
+          [{ text: '확인', onPress: () => requestLocationPermission() }]
+        )
+      } else {
+        return
+      }
+    }
+
+    requestLocationPermission()
+  }, [])
+
   return (
     <View style={styles.container}>
       <Image

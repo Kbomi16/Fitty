@@ -15,11 +15,11 @@ import KakaoMap from '@/components/KakaoMap'
 import { KAKAO_REST_API_KEY } from 'react-native-dotenv'
 import { auth, db } from '@/firebaseConfig'
 import { doc, updateDoc } from 'firebase/firestore'
-import useCurrentLocation from '@/hooks/useCurrentLocation'
 import { router } from 'expo-router'
+import { useLocation } from '@/hooks/useLocation'
 
 export default function RegisterGym() {
-  const { location, setLocation } = useCurrentLocation()
+  const { location, setLocation } = useLocation()
   const [searchResults, setSearchResults] = useState<
     Array<{ latitude: number; longitude: number; place_name: string }>
   >([])
@@ -72,7 +72,7 @@ export default function RegisterGym() {
     longitude: number
     place_name: string
   }) => {
-    setLocation({ latitude: item.latitude, longitude: item.longitude })
+    setLocation({ latitude: item.latitude, longitude: item.longitude }) // setLocation 사용
     setSearchResults([])
 
     Animated.timing(animation, {

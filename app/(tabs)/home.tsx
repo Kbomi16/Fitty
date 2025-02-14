@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, View, Alert } from 'react-native'
 import { auth, db } from '@/firebaseConfig'
 import { doc, getDoc, updateDoc } from 'firebase/firestore'
 import PrimaryButton from '@/components/ui/PrimaryButton'
-import useCurrentLocation from '@/hooks/useCurrentLocation'
+import { useLocation } from '@/hooks/useLocation' // useLocation 훅 가져오기
 import { getDistance } from '@/utils/getDistance'
 import KakaoMap from '@/components/KakaoMap'
 
@@ -13,7 +13,7 @@ export default function Home() {
     latitude: number
     longitude: number
   } | null>(null) // 헬스장 위치 정보
-  const { location } = useCurrentLocation() // 현재 위치 가져오기
+  const { location } = useLocation() // 현재 위치 가져오기
 
   // 헬스장 정보 세팅
   const fetchGymLocation = async (myGym: {
@@ -61,10 +61,7 @@ export default function Home() {
 
     // 헬스장 50m 이내일 때만 인증 가능
     if (distance > 50) {
-      Alert.alert(
-        '위치 확인 필요',
-        '헬스장 50m 이내에서 인증 버튼을 눌러주세요.'
-      )
+      Alert.alert('위치 확인 필요', '헬장 50m 이내에서 인증 버튼을 눌러주세요.')
       return
     }
 
@@ -172,5 +169,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginBottom: 20,
+  },
+  errorText: {
+    color: 'red',
+    marginTop: 20,
   },
 })
