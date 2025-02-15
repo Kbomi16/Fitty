@@ -37,6 +37,20 @@
           "backgroundColor": "#ffffff"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "e425239e-3be5-45d8-8997-bd3611f46083"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e425239e-3be5-45d8-8997-bd3611f46083"
+    }
   }
 }
