@@ -1,7 +1,7 @@
 import { LoginFormData } from '@/app/(auth)/login'
 import { FinalSignupFormData } from '@/app/(auth)/signup'
 import { db, auth } from '@/firebaseConfig'
-import { UserDetail } from '@/types/user'
+import { UserDetail } from '@/@types/user'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,

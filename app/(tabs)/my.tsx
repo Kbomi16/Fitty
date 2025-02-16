@@ -11,7 +11,7 @@ import {
   Alert,
 } from 'react-native'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
-import { UserDetail } from '@/types/user'
+import { UserDetail } from '@/@types/user'
 import { getUserData, updateUserData } from '@/api/firebaseApi'
 import { auth } from '@/firebaseConfig'
 import { FontAwesome } from '@expo/vector-icons'
