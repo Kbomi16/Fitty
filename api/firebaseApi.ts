@@ -7,7 +7,14 @@ import {
   signInWithEmailAndPassword,
   UserCredential,
 } from 'firebase/auth'
-import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore'
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore'
 
 // 회원가입
 export const signupUser = async (
@@ -67,5 +74,20 @@ export const getUserData = async (uid: string): Promise<UserDetail | null> => {
   } catch (error) {
     console.error('사용자 정보 로드 실패:', error)
     return null
+  }
+}
+
+// 사용자 정보 업데이트
+export const updateUserData = async (
+  uid: string,
+  updates: { nickname?: string; bio?: string }
+) => {
+  try {
+    const userDocRef = doc(db, 'users', uid)
+    await updateDoc(userDocRef, updates)
+    console.log('사용자 정보 업데이트 완료:', updates)
+  } catch (error) {
+    console.error('사용자 정보 업데이트 실패:', error)
+    throw error
   }
 }

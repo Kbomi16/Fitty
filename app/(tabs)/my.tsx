@@ -12,7 +12,7 @@ import {
 } from 'react-native'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { UserDetail } from '@/types/user'
-import { getUserData } from '@/api/firebaseApi'
+import { getUserData, updateUserData } from '@/api/firebaseApi'
 import { auth } from '@/firebaseConfig'
 import { FontAwesome } from '@expo/vector-icons'
 import PrimaryButton from '@/components/ui/PrimaryButton'
@@ -54,9 +54,18 @@ export default function MyPage() {
   }
 
   // TODO: 프로필 편집 기능 구현하기
-  const handleSaveProfile = () => {
-    setIsEditing(false)
-    console.log('Profile saved:', nickname, bio)
+  const handleSaveProfile = async () => {
+    if (!userData) return
+
+    try {
+      if (auth.currentUser)
+        await updateUserData(auth.currentUser.uid, { nickname, bio })
+      setUserData((prev) => (prev ? { ...prev, nickname, bio } : prev))
+      setIsEditing(false)
+      Alert.alert('저장 완료', '프로필이 업데이트 되었습니다.')
+    } catch (error) {
+      Alert.alert('오류', '프로필 업데이트 중 오류가 발생했습니다.')
+    }
   }
 
   const handleLogout = async () => {
