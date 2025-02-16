@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, View, Alert } from 'react-native'
 import { auth, db } from '@/firebaseConfig'
-import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
 import PrimaryButton from '@/components/ui/PrimaryButton'
 import { useLocation } from '@/hooks/useLocation' // useLocation 훅 가져오기
 import { getDistance } from '@/utils/getDistance'
@@ -69,7 +69,8 @@ export default function Home() {
 
     try {
       const userRef = doc(db, 'users', user.uid)
-      await updateDoc(userRef, { completeDate: today })
+      // arrayUnion()을 사용해 기존 배열에 중복 없이 날짜 추가
+      await updateDoc(userRef, { completed: arrayUnion(today) })
       setCompletedToday(true)
       Alert.alert('인증 완료', '오늘 운동 인증이 완료되었습니다!')
     } catch (error) {
@@ -120,12 +121,12 @@ export default function Home() {
         source={require('../../assets/images/fullLogo_bgRemoved.png')}
         style={styles.image}
       />
-      <Text style={styles.title}>오늘 헬스를 완료했나요?</Text>
-      <Text style={styles.text}>아래 버튼을 눌러 인증을 완료하세요!</Text>
       {completedToday ? (
-        <Text style={styles.completedText}>오늘 운동 인증 완료하셨습니다!</Text>
+        <Text style={styles.completedText}>오늘 운동을 완료하셨습니다!</Text>
       ) : (
         <>
+          <Text style={styles.title}>오늘 헬스를 완료했나요?</Text>
+          <Text style={styles.text}>아래 버튼을 눌러 인증을 완료하세요!</Text>
           {gymLocation && (
             <KakaoMap
               latitude={gymLocation.latitude}
@@ -162,8 +163,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   completedText: {
-    fontSize: 18,
-    color: 'green',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#739fff',
     marginTop: 20,
   },
   text: {
