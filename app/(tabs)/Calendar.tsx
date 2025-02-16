@@ -7,49 +7,90 @@ import { Calendar } from 'react-native-calendars'
 export default function CalendarScreen() {
   const { user } = useAuth()
   const [completedDates, setCompletedDates] = useState<{
-    [key: string]: { marked: boolean; dotColor?: string }
+    [key: string]: { selected: boolean; marked: boolean; selectedColor: string }
   }>({})
 
   useEffect(() => {
-    const fetchUserWorkoutData = async () => {
+    const fetchUserCompleteData = async () => {
       if (!user) return
       const userData = await getUserData(user.uid)
 
-      console.log('Fetched workout data:', userData) // 🔎 디버깅 로그
-
       if (userData?.completeDate) {
-        const formattedDates = userData.completeDate.reduce(
+        // completeDate 문자열 -> 배열로 변환
+        const dates = Array.isArray(userData.completeDate)
+          ? userData.completeDate
+          : [userData.completeDate]
+
+        const formattedDates = dates.reduce(
           (
-            acc: { [key: string]: { marked: boolean; dotColor: string } },
+            acc: {
+              [key: string]: {
+                selected: boolean
+                marked: boolean
+                selectedColor: string
+              }
+            },
             date: string
           ) => {
-            acc[date] = { marked: true, dotColor: 'blue' }
+            acc[date] = {
+              selected: true,
+              marked: false,
+              selectedColor: '#739fff',
+            }
             return acc
           },
           {}
         )
         setCompletedDates(formattedDates)
+      } else {
+        console.log('완료 날짜가 없음 또는 형식이 잘못됨')
       }
     }
 
-    fetchUserWorkoutData()
+    fetchUserCompleteData()
   }, [user])
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>운동 완료 기록</Text>
-      <Calendar
-        markedDates={completedDates}
-        theme={{
-          todayTextColor: 'red',
-          selectedDayBackgroundColor: '#739fff',
-        }}
-      />
+      <View style={styles.calendarContainer}>
+        <Calendar
+          markedDates={completedDates}
+          theme={{
+            selectedDayBackgroundColor: '#739fff',
+            selectedDayTextColor: '#fff',
+            arrowColor: '#739fff',
+            monthTextColor: '#5f6368',
+            textDayFontSize: 18,
+            textMonthFontSize: 20,
+          }}
+        />
+      </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, alignItems: 'center' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#f7f8fc',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginBottom: 30,
+    color: '#333',
+    textShadowColor: 'rgba(0, 0, 0, 0.1)',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 5,
+  },
+  calendarContainer: {
+    width: '100%',
+    borderRadius: 20,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    padding: 10,
+  },
 })
