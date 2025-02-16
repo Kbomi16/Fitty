@@ -24,7 +24,7 @@ export default function TabLayout() {
         options={{
           title: 'Calendar',
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="calendar" size={28} color={color} />
+            <FontAwesome size={28} name="calendar" color={color} />
           ),
         }}
       />
