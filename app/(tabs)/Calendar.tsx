@@ -1,4 +1,5 @@
 import { getUserData } from '@/api/firebaseApi'
+import RecommendRoutine from '@/components/RecommendRoutine'
 import { useAuth } from '@/contexts/AuthProvider'
 import { useState, useEffect } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
@@ -52,7 +53,7 @@ export default function CalendarScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>운동 완료 기록</Text>
+      <Text style={styles.title}>🌟운동 완료 기록</Text>
       <View style={styles.calendarContainer}>
         <Calendar
           markedDates={completedDates}
@@ -66,6 +67,7 @@ export default function CalendarScreen() {
           }}
         />
       </View>
+      <RecommendRoutine />
     </View>
   )
 }
@@ -75,16 +77,14 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#f7f8fc',
-    alignItems: 'center',
   },
   title: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 30,
+    marginBottom: 16,
     color: '#333',
-    textShadowColor: 'rgba(0, 0, 0, 0.1)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 5,
+    paddingStart: 10,
+    marginTop: 20,
   },
   calendarContainer: {
     width: '100%',
