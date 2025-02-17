@@ -4,6 +4,10 @@
 
 피트니스 관리 앱 **Fitty**는 여러분이 헬스장을 등록하고, 헬스장에 도착하면 인증을 완료할 수 있는 피트니스 동반자입니다! 🏋️‍♂️
 
+## 📍deploy
+
+[expo go 앱을 통해 테스트해보세요!](<https://expo.dev/preview/update?message=%E2%9C%A8%20feat%3A%20%EC%98%A4%EB%8A%98%EC%9D%98%20%EC%B6%94%EC%B2%9C%20%EC%9A%B4%EB%8F%99%20%EA%B5%AC%ED%98%84%20(%239)&updateRuntimeVersion=1.0.0&createdAt=2025-02-17T04%3A19%3A54.474Z&slug=exp&projectId=e425239e-3be5-45d8-8997-bd3611f46083&group=60fec322-a784-4f71-87ad-ed96c9593d95>)
+
 ## 📍**개발 기간**
 
 2024.02 ~
