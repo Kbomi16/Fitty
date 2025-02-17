@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 
-export default function CalendarScreen() {
+export default function CalendarPage() {
   const { user } = useAuth()
   const [completedDates, setCompletedDates] = useState<{
     [key: string]: { selected: boolean; marked: boolean; selectedColor: string }
