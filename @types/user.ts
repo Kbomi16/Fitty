@@ -2,6 +2,6 @@ export type UserDetail = {
   nickname: string
   email: string
   bio?: string
-  completeDate?: string[]
+  completed?: string[]
   friends?: string[]
 }

@@ -16,11 +16,12 @@ export default function CalendarPage() {
       if (!user) return
       const userData = await getUserData(user.uid)
 
-      if (userData?.completeDate) {
-        // completeDate 문자열 -> 배열로 변환
-        const dates = Array.isArray(userData.completeDate)
-          ? userData.completeDate
-          : [userData.completeDate]
+      if (userData?.completed) {
+        const dates = userData.completed
+          ? userData.completed
+          : [userData.completed]
+
+        console.log(dates)
 
         const formattedDates = dates.reduce(
           (
