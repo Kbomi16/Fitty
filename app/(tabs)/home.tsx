@@ -101,9 +101,9 @@ export default function Home() {
       const userRef = doc(db, 'users', user.uid)
       const userDoc = await getDoc(userRef)
       if (userDoc.exists()) {
-        const { completeDate } = userDoc.data()
+        const { completed } = userDoc.data()
         const today = new Date().toISOString().split('T')[0]
-        if (completeDate === today) {
+        if (completed.includes(today)) {
           setCompletedToday(true) // 오늘 이미 운동 인증을 했다면 완료 상태로 설정
         }
       }
