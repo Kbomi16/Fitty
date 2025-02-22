@@ -198,6 +198,7 @@ const getStyles = (theme: ThemeType) =>
       fontSize: 24,
       fontWeight: 'bold',
       marginVertical: 20,
+      color: theme.text,
     },
     searchContainer: {
       width: '100%',
@@ -222,9 +223,11 @@ const getStyles = (theme: ThemeType) =>
       height: 50,
       borderTopLeftRadius: 100,
       borderBottomLeftRadius: 100,
+      backgroundColor: theme.background,
+      color: theme.text,
     },
     button: {
-      backgroundColor: '#739fff',
+      backgroundColor: theme.buttonBg,
       borderTopRightRadius: 100,
       borderBottomRightRadius: 100,
       paddingHorizontal: 15,
@@ -258,7 +261,7 @@ const getStyles = (theme: ThemeType) =>
       width: '100%',
       maxHeight: '70%',
       padding: 20,
-      backgroundColor: '#fff',
+      backgroundColor: theme.background,
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       elevation: 5,
@@ -276,5 +279,6 @@ const getStyles = (theme: ThemeType) =>
     },
     resultItemText: {
       fontSize: 16,
+      color: theme.text,
     },
   })

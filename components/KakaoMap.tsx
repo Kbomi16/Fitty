@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, useColorScheme } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { KAKAO_MAP_JS_KEY } from 'react-native-dotenv'
 
@@ -14,6 +14,8 @@ export default function KakaoMap({
   longitude,
   height,
 }: KakaoMapProps) {
+  const theme = useColorScheme()
+
   const htmlContent = `
     <!DOCTYPE html>
     <html>
@@ -21,7 +23,9 @@ export default function KakaoMap({
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${KAKAO_MAP_JS_KEY}&libraries=services"></script>
         <style>
-          body { margin: 0; padding: 0; height: 100%; background-color: #f9f9f9}
+          body { margin: 0; padding: 0; height: 100%; background-color: ${
+            theme === 'dark' ? '#1c1c1e' : '#f9f9f9'
+          }}
           html { height: 100%; }
           #map { width: 100%; height: 100%; border-radius: 20px; overflow: hidden;}
         </style>
@@ -66,7 +70,6 @@ export default function KakaoMap({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f9f9f9',
     width: '100%',
     marginTop: 20,
   },

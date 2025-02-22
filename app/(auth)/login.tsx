@@ -134,6 +134,7 @@ const getStyles = (theme: ThemeType) =>
       marginBottom: 8,
       borderRadius: 100,
       backgroundColor: theme.background,
+      color: theme.text,
     },
     footerText: {
       marginTop: 20,
