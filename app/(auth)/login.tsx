@@ -1,5 +1,4 @@
 import { loginSchema } from '@/constants/loginSchema'
-import { commonStyles } from '@/styles/commonStyles'
 import { Link, router } from 'expo-router'
 import { View, TextInput, StyleSheet, Text, Image, Alert } from 'react-native'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -11,10 +10,16 @@ import { UserCredential } from 'firebase/auth'
 import PrimaryButton from '@/components/ui/PrimaryButton'
 import { db } from '@/firebaseConfig'
 import { doc, getDoc } from 'firebase/firestore'
+import { ThemeType } from '@/utils/theme'
+import { useTheme } from '@/contexts/ThemeProvider'
+import { useMemo } from 'react'
 
 export type LoginFormData = z.infer<typeof loginSchema>
 
 export default function Login() {
+  const theme = useTheme()
+  const styles = useMemo(() => getStyles(theme), [theme])
+
   const {
     register,
     handleSubmit,
@@ -59,7 +64,7 @@ export default function Login() {
   }
 
   return (
-    <View style={commonStyles.container}>
+    <View style={styles.container}>
       <Link href="/">
         <Image
           source={require('../../assets/images/fullLogo_bgRemoved.png')}
@@ -98,38 +103,46 @@ export default function Login() {
   )
 }
 
-const styles = StyleSheet.create({
-  image: {
-    width: 300,
-    height: 200,
-    resizeMode: 'contain',
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#4a4a4a',
-    marginBottom: 20,
-  },
-  input: {
-    width: '100%',
-    maxWidth: 300,
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    padding: 12,
-    marginBottom: 8,
-    borderRadius: 100,
-    backgroundColor: '#ffffff',
-  },
-  footerText: {
-    marginTop: 20,
-    fontSize: 14,
-    color: '#6b7280',
-  },
-  linkText: {
-    color: '#739fff',
-    fontWeight: 'bold',
-  },
-  errorText: { color: 'red', marginBottom: 8 },
-})
+const getStyles = (theme: ThemeType) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      paddingTop: 100,
+      backgroundColor: theme.background,
+    },
+    image: {
+      width: 300,
+      height: 200,
+      resizeMode: 'contain',
+      marginBottom: 20,
+    },
+    title: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      color: theme.title,
+      marginBottom: 20,
+    },
+    input: {
+      width: '100%',
+      maxWidth: 300,
+      height: 40,
+      borderWidth: 1,
+      borderColor: '#d1d5db',
+      padding: 12,
+      marginBottom: 8,
+      borderRadius: 100,
+      backgroundColor: theme.background,
+    },
+    footerText: {
+      marginTop: 20,
+      fontSize: 14,
+      color: '#6b7280',
+    },
+    linkText: {
+      color: '#739fff',
+      fontWeight: 'bold',
+    },
+    errorText: { color: 'red', marginBottom: 8 },
+  })
