@@ -1,10 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import PrimaryButton from '@/components/ui/PrimaryButton'
 import { router } from 'expo-router'
 import { View, StyleSheet, Text, Image, Alert } from 'react-native'
 import * as Location from 'expo-location'
+import { ThemeType } from '@/utils/theme'
+import { useTheme } from '@/contexts/ThemeProvider'
 
 export default function Start() {
+  const theme = useTheme()
+  const styles = useMemo(() => getStyles(theme), [theme])
+
   useEffect(() => {
     const requestLocationPermission = async () => {
       const { status } = await Location.requestForegroundPermissionsAsync()
@@ -39,29 +44,31 @@ export default function Start() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 200,
-    backgroundColor: '#f8f9fd',
-  },
-  image: {
-    width: 300,
-    height: 200,
-    resizeMode: 'contain',
-    marginBottom: 30,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  description: {
-    fontSize: 16,
-    color: '#457b9d',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-})
+const getStyles = (theme: ThemeType) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      paddingTop: 200,
+      backgroundColor: theme.background,
+    },
+    image: {
+      width: 300,
+      height: 200,
+      resizeMode: 'contain',
+      marginBottom: 30,
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      color: theme.text,
+    },
+    description: {
+      fontSize: 16,
+      color: theme.text,
+      textAlign: 'center',
+      marginBottom: 20,
+    },
+  })

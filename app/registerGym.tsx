@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   View,
   Text,
@@ -17,8 +17,13 @@ import { auth, db } from '@/firebaseConfig'
 import { doc, updateDoc } from 'firebase/firestore'
 import { router } from 'expo-router'
 import { useLocation } from '@/hooks/useLocation'
+import { ThemeType } from '@/utils/theme'
+import { useTheme } from '@/contexts/ThemeProvider'
 
 export default function RegisterGym() {
+  const theme = useTheme()
+  const styles = useMemo(() => getStyles(theme), [theme])
+
   const { location, setLocation } = useLocation()
   const [searchResults, setSearchResults] = useState<
     Array<{ latitude: number; longitude: number; place_name: string }>
@@ -180,95 +185,100 @@ export default function RegisterGym() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#f8f9fd',
-    padding: 20,
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginVertical: 20,
-  },
-  searchContainer: {
-    width: '100%',
-    marginBottom: 10,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 10,
-    padding: 10,
-    elevation: 3,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: '#ddd',
-  },
-  input: {
-    flex: 1,
-    paddingHorizontal: 15,
-    fontSize: 16,
-    height: 50,
-    borderTopLeftRadius: 100,
-    borderBottomLeftRadius: 100,
-  },
-  button: {
-    backgroundColor: '#739fff',
-    borderTopRightRadius: 100,
-    borderBottomRightRadius: 100,
-    paddingHorizontal: 15,
-    height: 50,
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    zIndex: 10,
-  },
-  modalBackground: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-  },
-  resultList: {
-    width: '100%',
-    maxHeight: '70%',
-    padding: 20,
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    elevation: 5,
-  },
-  resultListTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    color: '#739fff',
-  },
-  resultItem: {
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  resultItemText: {
-    fontSize: 16,
-  },
-})
+const getStyles = (theme: ThemeType) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      backgroundColor: theme.background,
+      padding: 20,
+    },
+    text: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginVertical: 20,
+      color: theme.text,
+    },
+    searchContainer: {
+      width: '100%',
+      marginBottom: 10,
+      backgroundColor: theme.background,
+      borderRadius: 10,
+      padding: 10,
+      elevation: 3,
+    },
+    inputWrapper: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.text,
+      borderRadius: 100,
+      borderWidth: 1,
+      borderColor: '#ddd',
+    },
+    input: {
+      flex: 1,
+      paddingHorizontal: 15,
+      fontSize: 16,
+      height: 50,
+      borderTopLeftRadius: 100,
+      borderBottomLeftRadius: 100,
+      backgroundColor: theme.background,
+      color: theme.text,
+    },
+    button: {
+      backgroundColor: theme.buttonBg,
+      borderTopRightRadius: 100,
+      borderBottomRightRadius: 100,
+      paddingHorizontal: 15,
+      height: 50,
+      justifyContent: 'center',
+    },
+    buttonText: {
+      color: '#fff',
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+    overlay: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      zIndex: 10,
+    },
+    modalBackground: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    },
+    resultList: {
+      width: '100%',
+      maxHeight: '70%',
+      padding: 20,
+      backgroundColor: theme.background,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      elevation: 5,
+    },
+    resultListTitle: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 5,
+      color: '#739fff',
+    },
+    resultItem: {
+      paddingVertical: 15,
+      borderBottomWidth: 1,
+      borderBottomColor: '#ddd',
+    },
+    resultItemText: {
+      fontSize: 16,
+      color: theme.text,
+    },
+  })

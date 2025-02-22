@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   ActivityIndicator,
   TextInput,
   Image,
-  Button,
   TouchableOpacity,
   Alert,
 } from 'react-native'
@@ -17,8 +16,13 @@ import { auth } from '@/firebaseConfig'
 import { FontAwesome } from '@expo/vector-icons'
 import PrimaryButton from '@/components/ui/PrimaryButton'
 import { router } from 'expo-router'
+import { ThemeType } from '@/utils/theme'
+import { useTheme } from '@/contexts/ThemeProvider'
 
 export default function MyPage() {
+  const theme = useTheme()
+  const styles = useMemo(() => getStyles(theme), [theme])
+
   const [userData, setUserData] = useState<UserDetail | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -151,76 +155,78 @@ export default function MyPage() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f8f9fa',
-    paddingHorizontal: 20,
-  },
-  profileContainer: {
-    width: '100%',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 15,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  profileImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    marginBottom: 20,
-    borderWidth: 2,
-    borderColor: '#f0f0f0',
-  },
-  profileDetails: {
-    width: '100%',
-    paddingHorizontal: 30,
-  },
-  heading: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 20,
-    color: '#739fff',
-  },
-  text: {
-    fontSize: 16,
-    color: '#555',
-    marginTop: 5,
-  },
-  input: {
-    fontSize: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#739fff',
-    marginBottom: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-  },
-  buttonContainer: {
-    marginTop: 20,
-    width: '100%',
-    alignItems: 'center',
-  },
-  separator: {
-    borderBottomWidth: 2,
-    borderBottomColor: '#f0f0f0',
-    width: '100%',
-    marginBottom: 15,
-  },
-  logoutButton: {
-    width: '100%',
-    maxWidth: 300,
-    paddingVertical: 14,
-    borderRadius: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 2,
-    borderColor: '#f8f9fa',
-  },
-})
+const getStyles = (theme: ThemeType) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.background,
+      paddingHorizontal: 20,
+    },
+    profileContainer: {
+      width: '100%',
+      alignItems: 'center',
+      backgroundColor: theme.elementBg,
+      padding: 20,
+      borderRadius: 15,
+      shadowColor: '#000',
+      shadowOpacity: 0.1,
+      shadowOffset: { width: 0, height: 4 },
+      shadowRadius: 8,
+      elevation: 5,
+    },
+    profileImage: {
+      width: 150,
+      height: 150,
+      borderRadius: 75,
+      marginBottom: 20,
+      borderWidth: 2,
+      borderColor: '#f0f0f0',
+    },
+    profileDetails: {
+      width: '100%',
+      paddingHorizontal: 30,
+    },
+    heading: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginTop: 20,
+      color: '#739fff',
+    },
+    text: {
+      fontSize: 16,
+      color: theme.grayText,
+      marginTop: 5,
+    },
+    input: {
+      fontSize: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: '#739fff',
+      marginBottom: 10,
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      color: theme.text,
+    },
+    buttonContainer: {
+      marginTop: 20,
+      width: '100%',
+      alignItems: 'center',
+    },
+    separator: {
+      borderBottomWidth: 2,
+      borderBottomColor: '#f0f0f0',
+      width: '100%',
+      marginBottom: 15,
+    },
+    logoutButton: {
+      width: '100%',
+      maxWidth: 300,
+      paddingVertical: 14,
+      borderRadius: 100,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 2,
+      borderColor: theme.borderColor,
+    },
+  })
