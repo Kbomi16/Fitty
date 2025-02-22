@@ -1,9 +1,14 @@
 import { ExerciseCategory, Workout } from '@/@types/exercise'
 import { getExercises } from '@/api/firebaseApi'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Text, View, FlatList, StyleSheet } from 'react-native'
+import { ThemeType } from '@/utils/theme'
+import { useTheme } from '@/contexts/ThemeProvider'
 
 export default function RecommendRoutine() {
+  const theme = useTheme()
+  const styles = useMemo(() => getStyles(theme), [theme])
+
   const [exercises, setExercises] = useState<ExerciseCategory[]>([])
   const [loading, setLoading] = useState(true)
   const [recommendedWorkouts, setRecommendedWorkouts] = useState<Workout[]>([])
@@ -89,59 +94,59 @@ export default function RecommendRoutine() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 10,
-    marginTop: 20,
-    height: 210,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#333',
-  },
-  exerciseContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 10,
-    marginRight: 12,
-    width: 100,
-    height: 130,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  exerciseName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 5,
-  },
-  exerciseType: {
-    fontSize: 14,
-    color: '#666',
-    marginVertical: 4,
-  },
-  exerciseDetails: {
-    fontSize: 14,
-    color: '#fff',
-    backgroundColor: '#739fff',
-    borderRadius: 100,
-    textAlign: 'center',
-    padding: 1,
-    marginTop: 10,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-  },
-  loadingText: {
-    fontSize: 18,
-    color: '#333',
-  },
-})
+const getStyles = (theme: ThemeType) =>
+  StyleSheet.create({
+    container: {
+      padding: 10,
+      marginTop: 20,
+      height: 210,
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 16,
+      color: theme.text,
+    },
+    exerciseContainer: {
+      backgroundColor: theme.elementBg,
+      borderRadius: 8,
+      padding: 10,
+      marginRight: 12,
+      width: 100,
+      height: 130,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.1,
+      shadowRadius: 5,
+      elevation: 3,
+    },
+    exerciseName: {
+      fontSize: 18,
+      fontWeight: '600',
+      color: theme.text,
+      marginBottom: 5,
+    },
+    exerciseType: {
+      fontSize: 14,
+      color: '#666',
+      marginVertical: 4,
+    },
+    exerciseDetails: {
+      fontSize: 14,
+      color: '#fff',
+      backgroundColor: '#739fff',
+      borderRadius: 100,
+      textAlign: 'center',
+      padding: 1,
+      marginTop: 10,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    loadingText: {
+      fontSize: 18,
+      color: '#333',
+    },
+  })

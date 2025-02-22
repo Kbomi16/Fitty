@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Image, StyleSheet, Text, View, Alert } from 'react-native'
 import { auth, db } from '@/firebaseConfig'
 import { arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
@@ -6,8 +6,13 @@ import PrimaryButton from '@/components/ui/PrimaryButton'
 import { useLocation } from '@/hooks/useLocation' // useLocation 훅 가져오기
 import { getDistance } from '@/utils/getDistance'
 import KakaoMap from '@/components/KakaoMap'
+import { ThemeType } from '@/utils/theme'
+import { useTheme } from '@/contexts/ThemeProvider'
 
 export default function Home() {
+  const theme = useTheme()
+  const styles = useMemo(() => getStyles(theme), [theme])
+
   const [completedToday, setCompletedToday] = useState(false) // 오늘 운동 인증 여부
   const [gymLocation, setGymLocation] = useState<{
     latitude: number
@@ -143,37 +148,40 @@ export default function Home() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f8f9fa',
-    paddingHorizontal: 20,
-  },
-  image: {
-    width: 300,
-    height: 200,
-    resizeMode: 'contain',
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  completedText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#739fff',
-    marginTop: 20,
-  },
-  text: {
-    fontSize: 16,
-    marginBottom: 20,
-  },
-  errorText: {
-    color: 'red',
-    marginTop: 20,
-  },
-})
+const getStyles = (theme: ThemeType) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.background,
+      paddingHorizontal: 20,
+    },
+    image: {
+      width: 300,
+      height: 200,
+      resizeMode: 'contain',
+      marginBottom: 20,
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      color: theme.text,
+    },
+    completedText: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: '#739fff',
+      marginTop: 20,
+    },
+    text: {
+      fontSize: 16,
+      marginBottom: 20,
+      color: theme.secondaryText,
+    },
+    errorText: {
+      color: 'red',
+      marginTop: 20,
+    },
+  })
