@@ -213,7 +213,7 @@ const getStyles = (theme: ThemeType) =>
       alignItems: 'center',
       backgroundColor: theme.text,
       borderRadius: 100,
-      borderWidth: 1,
+      borderWidth: 2,
       borderColor: '#ddd',
     },
     input: {

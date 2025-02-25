@@ -1,30 +1,56 @@
 import React, { useEffect, useMemo } from 'react'
 import PrimaryButton from '@/components/ui/PrimaryButton'
 import { router } from 'expo-router'
-import { View, StyleSheet, Text, Image, Alert } from 'react-native'
+import { View, StyleSheet, Text, Image, Alert, Linking } from 'react-native'
 import * as Location from 'expo-location'
 import { ThemeType } from '@/utils/theme'
 import { useTheme } from '@/contexts/ThemeProvider'
+import * as Notifications from 'expo-notifications'
+import { scheduleNotifications } from '@/utils/scheduleNotifications'
 
 export default function Start() {
   const theme = useTheme()
   const styles = useMemo(() => getStyles(theme), [theme])
 
-  useEffect(() => {
-    const requestLocationPermission = async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync()
-      if (status !== 'granted') {
-        Alert.alert(
-          '위치 권한 필요',
-          '앱을 사용하려면 위치 권한이 필요합니다.',
-          [{ text: '확인', onPress: () => requestLocationPermission() }]
-        )
-      } else {
-        return
-      }
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }),
+  })
+
+  const requestPermissions = async () => {
+    // 위치 권한 요청
+    const { status: locationStatus } =
+      await Location.requestForegroundPermissionsAsync()
+    if (locationStatus !== 'granted') {
+      Alert.alert('위치 권한 필요', '앱을 사용하려면 위치 권한이 필요합니다.', [
+        { text: '확인' },
+      ])
     }
 
-    requestLocationPermission()
+    // 알림 권한 요청
+    const { status: existingNotificationStatus } =
+      await Notifications.getPermissionsAsync()
+
+    if (existingNotificationStatus !== 'granted') {
+      const { status: notificationStatus } =
+        await Notifications.requestPermissionsAsync()
+
+      if (notificationStatus !== 'granted') {
+        Alert.alert(
+          '알림 권한 필요',
+          '운동 알림을 받으려면 알림 권한이 필요합니다.',
+          [{ text: '설정으로 이동', onPress: () => Linking.openSettings() }]
+        )
+        return
+      }
+      await scheduleNotifications()
+    }
+  }
+  useEffect(() => {
+    requestPermissions()
   }, [])
 
   return (
