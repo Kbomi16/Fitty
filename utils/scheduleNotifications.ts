@@ -3,7 +3,7 @@ import * as Notifications from 'expo-notifications'
 export const scheduleNotifications = async () => {
   const notificationSchedules = [
     { hour: 10, message: '🌅 굿모닝! 오늘도 헬스장 가야죠? 💪🏻' },
-    { hour: 14, message: '오늘 운동을 완료했나요? 💪🏻' },
+    { hour: 15, message: '오늘 운동을 완료했나요? 💪🏻' },
     { hour: 20, message: '오늘 운동을 완료했나요? 💪🏻' },
   ]
 
