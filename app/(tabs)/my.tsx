@@ -61,7 +61,6 @@ export default function MyPage() {
     setIsEditing(!isEditing)
   }
 
-  // TODO: 프로필 편집 기능 구현하기
   const handleSaveProfile = async () => {
     if (!userData) return
 

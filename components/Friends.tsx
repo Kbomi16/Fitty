@@ -9,6 +9,7 @@ import {
   Button,
   TouchableWithoutFeedback,
   Alert,
+  Image,
 } from 'react-native'
 import { ThemeType } from '@/utils/theme'
 import { useTheme } from '@/contexts/ThemeProvider'
@@ -101,6 +102,10 @@ export default function Friends({ friends, setFrineds }: FriendsProps) {
       {friends.length > 0 ? (
         friends.map((friend, index) => (
           <View key={index} style={styles.friendsElement}>
+            <Image
+              source={require('../assets/images/faceLogo.png')}
+              style={styles.profileImage}
+            />
             <Text style={styles.text}>{friend}</Text>
           </View>
         ))
@@ -146,6 +151,8 @@ const getStyles = (theme: ThemeType) =>
     },
     friendsElement: {
       width: '100%',
+      display: 'flex',
+      flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: theme.elementBg,
       padding: 20,
@@ -155,6 +162,7 @@ const getStyles = (theme: ThemeType) =>
       shadowOffset: { width: 0, height: 4 },
       shadowRadius: 8,
       elevation: 5,
+      gap: 10,
     },
     text: {
       fontSize: 16,
@@ -208,5 +216,12 @@ const getStyles = (theme: ThemeType) =>
       borderRadius: 10,
       backgroundColor: theme.elementBg,
       color: theme.text,
+    },
+    profileImage: {
+      width: 50,
+      height: 50,
+      borderRadius: 100,
+      borderWidth: 2,
+      borderColor: '#f0f0f0',
     },
   })
