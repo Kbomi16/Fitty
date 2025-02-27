@@ -142,14 +142,20 @@ export const getUserByNickname = async (
     const querySnapshot = await getDocs(userQuery)
 
     if (!querySnapshot.empty) {
-      const userData = querySnapshot.docs[0].data() as UserDetail
-      return userData
+      const doc = querySnapshot.docs[0] // 첫 번째 문서
+      const userData = doc.data() as UserDetail
+
+      // 문서 ID를 uid로 추가
+      return {
+        ...userData,
+        uid: doc.id,
+      }
     } else {
       console.log('사용자를 찾을 수 없습니다.')
       return null
     }
   } catch (error) {
     console.error('사용자 정보 로드 실패:', error)
-    return null
+    throw error
   }
 }

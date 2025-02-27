@@ -45,32 +45,48 @@ export default function Friends({ friends, setFrineds }: FriendsProps) {
 
   // Firebase에 친구 추가
   const handleAddFriendToList = async () => {
-    if (!search) return
-
-    // Firebase에서 사용자 닉네임으로 검색
-    const user = await getUserByNickname(search)
-    if (!user) {
-      Alert.alert('사용자를 찾을 수 없습니다.', '닉네임을 다시 확인해주세요.')
+    const trimmedSearch = search.trim()
+    if (!trimmedSearch) {
+      Alert.alert('검색어를 입력해주세요.')
       return
     }
 
     try {
+      const user = await getUserByNickname(trimmedSearch.toLowerCase())
+      if (!user) {
+        Alert.alert('사용자를 찾을 수 없습니다.', '닉네임을 다시 확인해주세요.')
+        return
+      }
+
+      if (friends.includes(user.nickname)) {
+        Alert.alert('이미 친구로 등록되어 있습니다.')
+        return
+      }
+
       if (auth.currentUser) {
+        const currentUser = await getUserData(auth.currentUser.uid)
+
         await updateUserData(auth.currentUser.uid, {
           friends: [...friends, user.nickname],
         })
+
         setFrineds((prev) => [...prev, user.nickname])
+
+        if (currentUser?.nickname) {
+          await updateUserData(user.uid!, {
+            friends: [...(user.friends ?? []), currentUser.nickname],
+          })
+        }
+
         Alert.alert(
           '친구 추가 성공!',
-          `${user.nickname}님을 친구로 추가했습니다.`
+          `${user.nickname}님과 친구가 되었습니다!`
         )
         handleCloseModal()
       }
     } catch (error) {
-      Alert.alert(
-        '친구 추가 실패...',
-        '친구 추가 중 오류가 발생했습니다. 다시 시도해주세요.'
-      )
+      console.error('친구 추가 중 오류:', error)
+      Alert.alert('친구 추가 실패', '잠시 후 다시 시도해주세요.')
     }
   }
 
