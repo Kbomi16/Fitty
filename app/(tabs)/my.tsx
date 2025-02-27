@@ -157,7 +157,7 @@ export default function MyPage() {
       ) : (
         <Text style={styles.text}>사용자 정보를 찾을 수 없습니다.</Text>
       )}
-      <Friends friends={friends} />
+      <Friends friends={friends} setFrineds={setFriends} />
     </ScrollView>
   )
 }

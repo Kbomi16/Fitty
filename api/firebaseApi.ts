@@ -13,8 +13,10 @@ import {
   doc,
   getDoc,
   getDocs,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from 'firebase/firestore'
 import { ExerciseCategory, Workout } from '@/@types/exercise'
 
@@ -82,7 +84,7 @@ export const getUserData = async (uid: string): Promise<UserDetail | null> => {
 // 사용자 정보 업데이트
 export const updateUserData = async (
   uid: string,
-  updates: { nickname?: string; bio?: string }
+  updates: { nickname?: string; bio?: string; friends?: string[] }
 ) => {
   try {
     const userDocRef = doc(db, 'users', uid)
@@ -125,5 +127,29 @@ export const getExercises = async (): Promise<ExerciseCategory[]> => {
   } catch (error) {
     console.error('운동 데이터 가져오기 실패:', error)
     throw error
+  }
+}
+
+// 닉네임으로 사용자 정보 가져오기
+export const getUserByNickname = async (
+  nickname: string
+): Promise<UserDetail | null> => {
+  try {
+    const userQuery = query(
+      collection(db, 'users'),
+      where('nickname', '==', nickname)
+    )
+    const querySnapshot = await getDocs(userQuery)
+
+    if (!querySnapshot.empty) {
+      const userData = querySnapshot.docs[0].data() as UserDetail
+      return userData
+    } else {
+      console.log('사용자를 찾을 수 없습니다.')
+      return null
+    }
+  } catch (error) {
+    console.error('사용자 정보 로드 실패:', error)
+    return null
   }
 }
