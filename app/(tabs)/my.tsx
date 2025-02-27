@@ -8,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  ScrollView,
 } from 'react-native'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { UserDetail } from '@/@types/user'
@@ -18,6 +19,7 @@ import PrimaryButton from '@/components/ui/PrimaryButton'
 import { router } from 'expo-router'
 import { ThemeType } from '@/utils/theme'
 import { useTheme } from '@/contexts/ThemeProvider'
+import Friends from '@/components/Friends'
 
 export default function MyPage() {
   const theme = useTheme()
@@ -28,6 +30,7 @@ export default function MyPage() {
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [nickname, setNickname] = useState<string>('')
   const [bio, setBio] = useState<string>('')
+  const [friends, setFriends] = useState<string[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +41,7 @@ export default function MyPage() {
             setUserData(data)
             setNickname(data.nickname)
             setBio(data.bio || '')
+            setFriends(data.friends || [])
           } else {
             console.log('사용자 데이터가 없습니다.')
           }
@@ -87,7 +91,9 @@ export default function MyPage() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>👤내 정보</Text>
+
       {userData ? (
         <View style={styles.profileContainer}>
           <Image
@@ -151,7 +157,8 @@ export default function MyPage() {
       ) : (
         <Text style={styles.text}>사용자 정보를 찾을 수 없습니다.</Text>
       )}
-    </View>
+      <Friends friends={friends} />
+    </ScrollView>
   )
 }
 
@@ -159,10 +166,9 @@ const getStyles = (theme: ThemeType) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
       backgroundColor: theme.background,
-      paddingHorizontal: 20,
+      padding: 20,
+      flexGrow: 1,
     },
     profileContainer: {
       width: '100%',
@@ -228,5 +234,13 @@ const getStyles = (theme: ThemeType) =>
       justifyContent: 'center',
       borderWidth: 2,
       borderColor: theme.borderColor,
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 16,
+      color: theme.text,
+      paddingStart: 10,
+      marginTop: 20,
     },
   })
